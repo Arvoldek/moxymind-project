@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "name": "John",
+      "job": "QA Engineer"
+    },
+    {
+      "name": "Jane",
+      "job": "Software Tester"
+    },
+    {
+      "name": "Bob",
+      "job": "Test Automation Specialist"
+    }
+  ],
+  "limitResponseTimeMs": 500
+}

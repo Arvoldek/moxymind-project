@@ -1,0 +1,73 @@
+name: Mobile Tests - iOS Calculator
+
+on:
+  workflow_dispatch:
+    inputs:
+      description:
+        description: 'Reason for running tests'
+        required: false
+        default: 'Manual trigger'
+
+jobs:
+  test:
+    name: Run Mobile Tests
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: 'npm'
+          cache-dependency-path: 'mobile/package-lock.json'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '26'
+          distribution: 'temurin'
+
+      - name: Install Mobile Dependencies
+        run: |
+          cd mobile
+          npm ci
+
+      - name: Start iOS Simulator
+        run: |
+          # Boot the iOS simulator
+          UDID=$(/Applications/Xcode.app/Contents/Developer/usr/bin/simctl list devices | grep "iPhone" | grep -v "Booted" | head -1 | awk '{print $NF}' | tr -d '()')
+          if [ -n "$UDID" ]; then
+            echo "Booting simulator: $UDID"
+            /Applications/Xcode.app/Contents/Developer/usr/bin/xcrun simctl boot "$UDID"
+            sleep 10
+          else
+            echo "No iOS simulator found"
+            exit 1
+          fi
+
+      - name: Start Appium Server
+        run: |
+          cd mobile
+          npm run appium:start &
+          sleep 5
+
+      - name: Run Mobile Tests
+        run: |
+          cd mobile
+          npm run test
+
+      - name: Stop Appium Server
+        if: always()
+        run: |
+          pkill -f appium || true
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-html-report
+          path: mobile/reports/
+          retention-days: 30

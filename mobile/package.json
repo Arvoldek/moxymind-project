@@ -1,0 +1,26 @@
+{
+  "name": "mobile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node ./src/index.ts",
+    "appium:start": "npx appium",
+    "appium:doctor": "npx appium-doctor --ios",
+    "test:debug": "NODE_ENV=debug ts-node ./src/index.ts",
+    "test:simulator": "ts-node ./src/index.ts --simulator"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@appium/types": "^1.5.0",
+    "@types/node": "^25.9.2",
+    "@wdio/types": "^9.27.2",
+    "appium": "^3.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "webdriverio": "^9.27.2"
+  }
+}
