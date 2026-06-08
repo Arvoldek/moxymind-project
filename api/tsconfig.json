@@ -37,6 +37,8 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
   "exclude": ["node_modules"]
 }
