@@ -34,6 +34,11 @@ jobs:
           cd api
           npm run install-browsers
 
+      - name: Create .env file
+        run: |
+          cd api
+          echo "REQRES_API_KEY=${{ secrets.REQRES_API_KEY }}" > .env
+
       - name: Run API Tests
         run: |
           cd api
