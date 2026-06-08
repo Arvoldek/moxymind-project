@@ -51,20 +51,22 @@ jobs:
       - name: Start Appium Server
         run: |
           cd mobile
-          npx appium &
+          npx appium server -p 4723 --base-path / > /tmp/appium.log 2>&1 &
           APPIUM_PID=$!
           echo "Appium PID: $APPIUM_PID"
           # Wait for Appium to be ready
           for i in {1..12}; do
-            if nc -z 127.0.0.1 4723; then
+            if curl -s http://127.0.0.1:4723/status > /dev/null 2>&1; then
               echo "Appium is ready on port 4723"
               break
             fi
             echo "Waiting for Appium... ($i/12)"
             sleep 5
           done
-          if ! nc -z 127.0.0.1 4723; then
+          if ! curl -s http://127.0.0.1:4723/status > /dev/null 2>&1; then
             echo "Appium failed to start"
+            echo "Appium logs:"
+            cat /tmp/appium.log
             exit 1
           fi
 
