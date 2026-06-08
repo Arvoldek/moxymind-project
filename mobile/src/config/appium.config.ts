@@ -15,11 +15,9 @@ const getDeviceUDID = (): string => {
 };
 
 const config = {
-  server: {
-    address: '127.0.0.1',
-    port: 4723,
-    path: '/wd/hub',
-  },
+  hostname: '127.0.0.1',
+  port: 4723,
+  path: '/wd/hub',
   capabilities: {
     platformName: 'iOS',
     platformVersion: '26.5',
