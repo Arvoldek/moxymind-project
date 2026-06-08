@@ -51,8 +51,22 @@ jobs:
       - name: Start Appium Server
         run: |
           cd mobile
-          npm run appium:start &
-          sleep 5
+          npx appium &
+          APPIUM_PID=$!
+          echo "Appium PID: $APPIUM_PID"
+          # Wait for Appium to be ready
+          for i in {1..12}; do
+            if nc -z 127.0.0.1 4723; then
+              echo "Appium is ready on port 4723"
+              break
+            fi
+            echo "Waiting for Appium... ($i/12)"
+            sleep 5
+          done
+          if ! nc -z 127.0.0.1 4723; then
+            echo "Appium failed to start"
+            exit 1
+          fi
 
       - name: Run Mobile Tests
         run: |
