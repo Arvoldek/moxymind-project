@@ -26,7 +26,7 @@ export function getDeviceUDID(): string {
   try {
     // Get first available iPhone 17 Pro
     const output = execSync(
-      '/Applications/Xcode.app/Contents/Developer/usr/bin/simctl list devices | grep "iPhone 17 Pro" | grep -v "Booted" | head -1 | awk \'{print $(NF-1)}\' | tr -d \)'
+      'xcrun simctl list devices | grep "iPhone 17 Pro" | grep -v "Booted" | head -1 | awk \'{print $(NF-1)}\' | tr -d "()"'
     ).toString().trim();
     
     if (output) {
