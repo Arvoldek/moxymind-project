@@ -38,10 +38,10 @@ jobs:
       - name: Start iOS Simulator
         run: |
           # Boot the iOS simulator
-          UDID=$(/Applications/Xcode.app/Contents/Developer/usr/bin/simctl list devices | grep "iPhone" | grep -v "Booted" | head -1 | awk '{print $NF}' | tr -d '()')
+          UDID=$(xcrun simctl list devices | grep "iPhone" | grep -v "Booted" | head -1 | awk '{print $(NF-1)}' | tr -d '()')
           if [ -n "$UDID" ]; then
             echo "Booting simulator: $UDID"
-            /Applications/Xcode.app/Contents/Developer/usr/bin/xcrun simctl boot "$UDID"
+            xcrun simctl boot "$UDID"
             sleep 10
           else
             echo "No iOS simulator found"
