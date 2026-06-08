@@ -1,5 +1,3 @@
-import { AppiumConfig } from '@appium/types';
-
 // Dynamic import to get device UDID at runtime
 const getDeviceUDID = (): string => {
   // Try to get an available iPhone 17 Pro device
@@ -16,17 +14,10 @@ const getDeviceUDID = (): string => {
   return '8B2E58DE-E51D-4F35-9148-FD0CEF9A5847';
 };
 
-const config: AppiumConfig = {
+const config = {
   server: {
     address: '127.0.0.1',
     port: 4723,
-  },
-  driver: {
-    name: 'XCUITest',
-  },
-  appium: {
-    // Appium server options
-    useRunningApp: true,
   },
   capabilities: {
     platformName: 'iOS',

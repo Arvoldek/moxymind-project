@@ -1,25 +1,25 @@
-import { remote, WebDriver } from 'webdriverio';
-import config from '../../appium.config';
+import { remote } from 'webdriverio';
+import config from '../config/appium.config';
 import { CalculatorPage } from '../pages/calculator.page';
 
 export interface MobileFixtures {
-  driver: WebDriver;
+  driver: WebdriverIO.Browser;
   calculatorPage: CalculatorPage;
 }
 
 // Start Appium session
-async function startSession(): Promise<WebDriver> {
+async function startSession(): Promise<WebdriverIO.Browser> {
   return await remote({
     ...config,
     capabilities: {
       ...config.capabilities,
       app: 'com.apple.calculator',
-    },
+    } as any,
   });
 }
 
 // Initialize page objects
-export async function getCalculatorPage(driver: WebDriver): Promise<CalculatorPage> {
+export async function getCalculatorPage(driver: WebdriverIO.Browser): Promise<CalculatorPage> {
   return new CalculatorPage(driver);
 }
 

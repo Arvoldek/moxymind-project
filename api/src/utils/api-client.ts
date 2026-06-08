@@ -14,7 +14,7 @@ export class ApiClient {
 
   async get(endpoint: string, params?: Record<string, string>): Promise<APIResponse> {
     const response = await this.request.get(endpoint, {
-      params,
+      ...(params ? { params } : {}),
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': API_KEY,

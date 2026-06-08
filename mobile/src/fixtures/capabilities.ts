@@ -1,7 +1,7 @@
-import { Capabilities } from '@wdio/types';
+import type { Capabilities } from '@wdio/types';
 
 // iOS Simulator capabilities for Calculator app
-export const iosCalculatorCapabilities: Capabilities = {
+export const iosCalculatorCapabilities = {
   platformName: 'iOS',
   platformVersion: '26.5',
   deviceName: 'iPhone 17 Pro',
@@ -17,7 +17,7 @@ export const iosCalculatorCapabilities: Capabilities = {
   useNewWDA: true,
   // Don't install the app, use the one already on the simulator
   skipUninstall: true,
-};
+} as Capabilities.RequestedStandaloneCapabilities;
 
 // Function to get device UDID dynamically
 export function getDeviceUDID(): string {
@@ -41,8 +41,8 @@ export function getDeviceUDID(): string {
 }
 
 // Create capabilities with dynamic UDID
-export function createCapabilities(udid?: string): Capabilities {
-  const caps = { ...iosCalculatorCapabilities };
+export function createCapabilities(udid?: string): Capabilities.RequestedStandaloneCapabilities {
+  const caps = { ...iosCalculatorCapabilities } as any;
   
   if (udid) {
     caps['appium:udid'] = udid;
@@ -50,5 +50,5 @@ export function createCapabilities(udid?: string): Capabilities {
     caps['appium:udid'] = getDeviceUDID();
   }
   
-  return caps;
+  return caps as Capabilities.RequestedStandaloneCapabilities;
 }

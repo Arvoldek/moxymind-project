@@ -1,4 +1,3 @@
-import { WebDriver } from 'webdriverio';
 import { CalculatorPage } from '../pages/calculator.page';
 
 /**
@@ -10,7 +9,7 @@ import { CalculatorPage } from '../pages/calculator.page';
  * - Ensures the app handles user input and produces correct results
  */
 
-async function runBasicOperationsTests(driver: WebDriver): Promise<void> {
+async function runBasicOperationsTests(driver: WebdriverIO.Browser): Promise<void> {
   const calculator = new CalculatorPage(driver);
 
   try {
@@ -111,7 +110,7 @@ if (require.main === module) {
   const config = require('../../appium.config').default;
 
   (async () => {
-    let driver: WebDriver;
+    let driver: any;
     try {
       driver = await remote({
         ...config,

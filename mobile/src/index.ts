@@ -1,10 +1,10 @@
 import { remote } from 'webdriverio';
-import config from '../appium.config';
+import config from './config/appium.config';
 import { join } from 'path';
 
 // Main test runner
 async function runTests() {
-  let driver: WebdriverIO.Browser;
+  let driver: WebdriverIO.Browser | undefined;
   
   try {
     console.log('Starting Appium session...');
@@ -16,7 +16,7 @@ async function runTests() {
         ...config.capabilities,
         // For iOS Calculator app
         app: 'com.apple.calculator',
-      },
+      } as any,
     });
 
     console.log('Appium session started successfully!');

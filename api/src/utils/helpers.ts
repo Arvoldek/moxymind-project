@@ -1,4 +1,4 @@
-import { test as base, expect, APIRequestContext } from '@playwright/test';
+import { test as base, expect, APIRequestContext, request as baseRequest } from '@playwright/test';
 import { ApiClient } from './api-client';
 
 // Extend test with API fixtures
@@ -9,7 +9,7 @@ interface ApiFixtures {
 
 export const test = base.extend<ApiFixtures>({
   request: async ({}, use) => {
-    const context = await base.request.newContext();
+    const context = await baseRequest.newContext();
     await use(context);
     await context.dispose();
   },

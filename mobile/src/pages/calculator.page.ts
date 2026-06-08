@@ -1,8 +1,6 @@
-import { WebDriver } from 'webdriverio';
-
 // iOS Calculator app element locators
 export class CalculatorPage {
-  private driver: WebDriver;
+  private driver: WebdriverIO.Browser;
 
   // Button locators using accessibility IDs
   readonly digitButtons: Record<string, string>;
@@ -11,7 +9,7 @@ export class CalculatorPage {
   readonly clearButton: string;
   readonly resultLabel: string;
 
-  constructor(driver: WebDriver) {
+  constructor(driver: WebdriverIO.Browser) {
     this.driver = driver;
 
     // iOS Calculator uses accessibility IDs
