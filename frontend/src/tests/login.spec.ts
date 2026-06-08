@@ -15,17 +15,19 @@ test.describe.serial('Login Tests', () => {
   });
 
   test('User Login with Valid Credentials', async ({ loginPage, inventoryPage, page }) => {
-    // Act
-    await loginPage.login(USER_CREDENTIALS.VALID.username, USER_CREDENTIALS.VALID.password);
+    await test.step('Act - Login with valid credentials', async () => {
+      await loginPage.login(USER_CREDENTIALS.VALID.username, USER_CREDENTIALS.VALID.password);
+    });
 
-    // Assert
-    // Verify we are redirected to inventory page
-    await expect(page).toHaveURL(/inventory\.html/);
-    await expect(inventoryPage.pageTitle).toBeVisible();
-    
-    // Verify items are visible
-    const itemCount = await inventoryPage.getInventoryItemCount();
-    expect(itemCount).toBeGreaterThan(0);
+    await test.step('Assert - Redirected to inventory page', async () => {
+      await expect(page).toHaveURL(/inventory\.html/);
+      await expect(inventoryPage.pageTitle).toBeVisible();
+    });
+
+    await test.step('Assert - Items are visible', async () => {
+      const itemCount = await inventoryPage.getInventoryItemCount();
+      expect(itemCount).toBeGreaterThan(0);
+    });
   });
 
   /**
@@ -37,18 +39,20 @@ test.describe.serial('Login Tests', () => {
    * - Tests security measures and user feedback for login errors
    */
   test('User Login with Invalid Credentials', async ({ loginPage, page }) => {
-    // Act
-    await loginPage.login(USER_CREDENTIALS.INVALID.username, USER_CREDENTIALS.INVALID.password);
+    await test.step('Act - Login with invalid credentials', async () => {
+      await loginPage.login(USER_CREDENTIALS.INVALID.username, USER_CREDENTIALS.INVALID.password);
+    });
 
-    // Assert
-    // Verify error message is displayed
-    await expect(loginPage.errorMessage).toBeVisible();
-    const errorText = await loginPage.getErrorMessage();
-    expect(errorText).toContain('Username and password do not match');
-    
-    // Verify we remain on login page
-    await expect(page).toHaveURL('/');
-    await expect(loginPage.usernameInput).toBeVisible();
+    await test.step('Assert - Error message is displayed', async () => {
+      await expect(loginPage.errorMessage).toBeVisible();
+      const errorText = await loginPage.getErrorMessage();
+      expect(errorText).toContain('Username and password do not match');
+    });
+
+    await test.step('Assert - Remain on login page', async () => {
+      await expect(page).toHaveURL('/');
+      await expect(loginPage.usernameInput).toBeVisible();
+    });
   });
 
   /**
@@ -59,12 +63,14 @@ test.describe.serial('Login Tests', () => {
    * - Validates security measures against brute force attacks
    */
   test('Locked Out User cannot login', async ({ loginPage, page }) => {
-    // Act
-    await loginPage.login(USER_CREDENTIALS.LOCKED_OUT.username, USER_CREDENTIALS.LOCKED_OUT.password);
+    await test.step('Act - Login with locked out credentials', async () => {
+      await loginPage.login(USER_CREDENTIALS.LOCKED_OUT.username, USER_CREDENTIALS.LOCKED_OUT.password);
+    });
 
-    // Assert
-    await expect(loginPage.errorMessage).toBeVisible();
-    const errorText = await loginPage.getErrorMessage();
-    expect(errorText).toContain('locked out');
+    await test.step('Assert - Locked out error message is displayed', async () => {
+      await expect(loginPage.errorMessage).toBeVisible();
+      const errorText = await loginPage.getErrorMessage();
+      expect(errorText).toContain('locked out');
+    });
   });
 });
