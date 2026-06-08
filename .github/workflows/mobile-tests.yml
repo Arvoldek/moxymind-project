@@ -51,7 +51,7 @@ jobs:
       - name: Start Appium Server
         run: |
           cd mobile
-          npx appium server -p 4723 --base-path / > /tmp/appium.log 2>&1 &
+          npx appium server -p 4723 > /tmp/appium.log 2>&1 &
           APPIUM_PID=$!
           echo "Appium PID: $APPIUM_PID"
           # Wait for Appium to be ready
