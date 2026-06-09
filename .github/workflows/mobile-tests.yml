@@ -67,7 +67,7 @@ jobs:
       - name: Start Appium Server
         run: |
           cd mobile
-          npx appium server -p 4723 --base-path / --allow-insecure all --log-level debug > /tmp/appium.log 2>&1 &
+          npx appium server -p 4723 --base-path / --allow-insecure '*':all --log-level debug > /tmp/appium.log 2>&1 &
           APPIUM_PID=$!
           echo "Appium PID: $APPIUM_PID"
           echo "Appium log file location: /tmp/appium.log"
