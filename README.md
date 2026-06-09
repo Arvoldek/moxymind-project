@@ -1,53 +1,6 @@
 # Moxymind Test Automation Project
 
-This project contains comprehensive test automation solutions for 4 technical tasks covering frontend, API, and mobile testing.
-
-## Project Structure
-
-```
-moxymind-project/
-├── README.md                           # This file
-├── instructions.md                    # Original task requirements
-├── plan.md                            # Implementation plan
-│
-├── frontend/                          # Task 1: Frontend Test Automation
-│   ├── src/
-│   │   ├── pages/                     # Page Object Models
-│   │   ├── tests/                     # Test specifications
-│   │   ├── fixtures/                  # Test data
-│   │   └── utils/                     # Helper functions
-│   ├── playwright.config.ts            # Playwright configuration
-│   ├── package.json                   # Project dependencies
-│   ├── tsconfig.json                  # TypeScript configuration
-│   └── README.md                       # Task-specific documentation
-│
-├── api/                              # Task 2: API Test Automation
-│   ├── src/
-│   │   ├── tests/                     # API test specifications
-│   │   ├── fixtures/                  # Test data and schemas
-│   │   └── utils/                     # API client and helpers
-│   ├── playwright.config.ts            # Playwright configuration
-│   ├── package.json                   # Project dependencies
-│   ├── tsconfig.json                  # TypeScript configuration
-│   └── README.md                       # Task-specific documentation
-│
-├── mobile/                           # Task 3: Mobile Test Automation
-│   ├── src/
-│   │   ├── pages/                     # Mobile Page Objects
-│   │   ├── tests/                     # Mobile test specifications
-│   │   ├── fixtures/                  # Device capabilities
-│   │   └── utils/                     # Appium helpers
-│   ├── appium.config.ts               # Appium configuration
-│   ├── package.json                   # Project dependencies
-│   ├── tsconfig.json                  # TypeScript configuration
-│   └── README.md                       # Task-specific documentation
-│
-└── .github/
-    └── workflows/                     # Task 4: GitHub Actions
-        ├── frontend-tests.yml
-        ├── api-tests.yml
-        └── mobile-tests.yml
-```
+This project contains comprehensive test automation solutions for 3 technical tasks covering frontend, API, and mobile testing.
 
 ## Prerequisites
 
@@ -137,71 +90,38 @@ npm run report                   # Show HTML report
 
 **Note:** The API tests use ReqRes.in as the SUT (https://reqres.in/api/). An API key is required and should be stored in `api/.env` file. The project includes the provided API key in the `.env` file template.
 
-### Mobile Tests (iOS Calculator)
+### Mobile Tests (iOS Contacts)
 ```bash
 # Terminal 1: Start Appium server
 cd mobile
-npm run appium:start
+npm run appium
 
 # Terminal 2: Run tests
 npm run test
-
-# Or run with debug
-npm run test:debug
 ```
 
-The mobile tests use the built-in iOS Calculator app and test:
-- Basic arithmetic operations (addition, subtraction, multiplication, division)
-- Complex calculation sequences
-- Clear functionality
+The mobile tests use the built-in iOS Contacts app (`com.apple.MobileAddressBook`) and test:
+- Creating new contacts
+- Verifying contact existence
+- Deleting contacts
+
+The tests are configured for iOS 17+ using WebDriverIO with Appium and the XCUITest driver, targeting iPhone 17 Pro.
 
 ## Test Reports
 
 All tasks generate HTML reports:
 - **Frontend:** `frontend/playwright-report/`
 - **API:** `api/playwright-report/`
-- **Mobile:** `mobile/reports/`
+- **Mobile:** `mobile/mochawesome-report/`
 
 ## GitHub Actions
 
-Each task has a corresponding GitHub Actions workflow that:
+Frontend and API tests have a corresponding GitHub Actions workflow that:
 - Runs tests manually (workflow_dispatch trigger)
 - Uploads HTML reports as artifacts
 - Can be triggered from the GitHub Actions tab
 
 See `.github/workflows/` for the workflow files.
-
-## Design Patterns and Best Practices
-
-### Frontend (Playwright)
-- **Page Object Model (POM):** Separate page classes for each page
-- **Reusable Components:** Shared test fixtures and utilities
-- **Hooks:** beforeEach, afterEach for test setup/teardown
-- **TypeScript:** Strong typing throughout
-- **Best Practices:** Test steps, assertions, HTML reporter
-
-### API (Playwright)
-- **API Client Pattern:** Centralized HTTP client
-- **Data-Driven Testing:** External JSON test data
-- **Schema Validation:** Type checking for API responses
-- **Performance Testing:** Response time assertions
-
-### Mobile (Appium + WebDriverIO)
-- **Page Object Model:** CalculatorPage for mobile elements
-- **Factory Pattern:** Capability configurations
-- **Dependency Injection:** Driver management
-- **Cross-Platform:** iOS-specific configuration
-
-## Success Criteria
-
-- [x] All 4 technical tasks implemented
-- [x] All tests pass (frontend: 9, API: 2, mobile: pending Appium)
-- [x] All HTML reports generated
-- [x] All README documentation complete
-- [x] All GitHub Actions workflows configured
-- [x] All tests runnable from command line
-- [x] Best practices followed (POM, hooks, reusable components)
-- [x] **All npm packages installed at project level only**
 
 ## Notes
 
@@ -215,8 +135,8 @@ To use ReqRes with an API key:
 
 ### Mobile Testing
 Mobile tests require:
-- Appium server running (`npm run appium:start`)
+- Appium server running (`npm run appium`)
 - iOS Simulator available and booted
-- Proper device configuration
+- Proper device configuration with iPhone 17 Pro capabilities
 
-The tests are written to work with the built-in iOS Calculator app and use the latest iOS 26.5 runtime.
+The tests use WebDriverIO with Appium and the XCUITest driver, configured to run against the native iOS Contacts application on iOS 17+.
