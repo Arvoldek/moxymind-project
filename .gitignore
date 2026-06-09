@@ -4,6 +4,7 @@ reports/
 playwright-report/
 test-results/
 .playwright/
+mochawesome-report/
 .DS_Store
 *.log
 .env
