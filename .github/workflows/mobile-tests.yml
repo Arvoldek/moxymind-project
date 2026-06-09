@@ -72,7 +72,8 @@ jobs:
           if [ -n "$UDID" ]; then
             echo "Using UDID: $UDID"
             # Replace the hardcoded UDID in config.ts with the actual one
-            sed -i "s/'appium:udid': '.*'/'appium:udid': '$UDID'/" src/config/config.ts
+            # Use a different delimiter and escape the UDID
+            perl -pi -e "s|'appium:udid': '\S+'|'appium:udid': '$UDID'|" src/config/config.ts
           else
             echo "No booted iPhone simulator found"
             exit 1
