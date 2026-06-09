@@ -35,14 +35,30 @@ jobs:
           cd mobile
           npm ci
 
+      - name: Verify Appium and Drivers
+        run: |
+          cd mobile
+          npx appium driver list
+          npx appium --version
+
       - name: Start iOS Simulator
         run: |
+          # List available devices
+          echo "Available iOS devices:"
+          xcrun simctl list devices
           # Boot the iOS simulator
           UDID=$(xcrun simctl list devices | grep "iPhone" | grep -v "Booted" | head -1 | awk '{print $(NF-1)}' | tr -d '()')
           if [ -n "$UDID" ]; then
             echo "Booting simulator: $UDID"
             xcrun simctl boot "$UDID"
-            sleep 10
+            sleep 15
+            # Verify simulator is booted
+            if xcrun simctl list devices | grep "$UDID" | grep -q "Booted"; then
+              echo "Simulator $UDID is now booted"
+            else
+              echo "Failed to boot simulator $UDID"
+              exit 1
+            fi
           else
             echo "No iOS simulator found"
             exit 1
@@ -51,22 +67,24 @@ jobs:
       - name: Start Appium Server
         run: |
           cd mobile
-          npx appium server -p 4723 > /tmp/appium.log 2>&1 &
+          npx appium server -p 4723 --base-path / --allow-insecure all --log-level debug > /tmp/appium.log 2>&1 &
           APPIUM_PID=$!
           echo "Appium PID: $APPIUM_PID"
+          echo "Appium log file location: /tmp/appium.log"
           # Wait for Appium to be ready
-          for i in {1..12}; do
+          for i in {1..24}; do
             if curl -s http://127.0.0.1:4723/status > /dev/null 2>&1; then
               echo "Appium is ready on port 4723"
               break
             fi
-            echo "Waiting for Appium... ($i/12)"
+            echo "Waiting for Appium... ($i/24)"
             sleep 5
           done
           if ! curl -s http://127.0.0.1:4723/status > /dev/null 2>&1; then
             echo "Appium failed to start"
-            echo "Appium logs:"
+            echo "=== Appium logs ==="
             cat /tmp/appium.log
+            echo "=== End Appium logs ==="
             exit 1
           fi
 
