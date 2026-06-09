@@ -64,6 +64,20 @@ jobs:
             exit 1
           fi
 
+      - name: Set UDID in Config
+        run: |
+          cd mobile
+          # Get the booted iPhone simulator UDID
+          UDID=$(xcrun simctl list devices | grep "iPhone" | grep "Booted" | head -1 | awk '{print $(NF-1)}' | tr -d '()')
+          if [ -n "$UDID" ]; then
+            echo "Using UDID: $UDID"
+            # Replace the hardcoded UDID in config.ts with the actual one
+            sed -i "s/'appium:udid': '.*'/'appium:udid': '$UDID'/" src/config/config.ts
+          else
+            echo "No booted iPhone simulator found"
+            exit 1
+          fi
+
       - name: Start Appium Server
         run: |
           cd mobile
