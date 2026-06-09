@@ -67,13 +67,20 @@ jobs:
       - name: Set UDID in Config
         run: |
           cd mobile
-          # Get the booted iPhone simulator UDID
-          UDID=$(xcrun simctl list devices | grep "iPhone" | grep "Booted" | head -1 | awk '{print $(NF-1)}' | tr -d '()')
+          # Get the booted iPhone simulator UDID and name
+          SIM_INFO=$(xcrun simctl list devices | grep "iPhone" | grep "Booted" | head -1)
+          UDID=$(echo "$SIM_INFO" | awk '{print $(NF-1)}' | tr -d '()')
+          DEVICE_NAME=$(echo "$SIM_INFO" | awk '{print $NF}' | tr -d '()')
           if [ -n "$UDID" ]; then
             echo "Using UDID: $UDID"
-            # Replace the hardcoded UDID in config.ts with the actual one
-            # Use a different delimiter and escape the UDID
-            perl -pi -e "s|'appium:udid': '\S+'|'appium:udid': '$UDID'|" src/config/config.ts
+            echo "Device name: $DEVICE_NAME"
+            # Replace the hardcoded UDID and deviceName in config.ts
+            # Use | as delimiter to avoid issues with / in paths
+            sed -i "s|'appium:udid': '8B2E58DE-E51D-4F35-9148-FD0CEF9A5847'|'appium:udid': '$UDID'|" src/config/config.ts
+            sed -i "s|'appium:deviceName': 'iPhone 17 Pro'|'appium:deviceName': '$DEVICE_NAME'|" src/config/config.ts
+            # Show the modified config for debugging
+            echo "Modified config:"
+            cat src/config/config.ts
           else
             echo "No booted iPhone simulator found"
             exit 1
