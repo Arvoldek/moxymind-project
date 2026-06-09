@@ -21,14 +21,6 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -40,5 +32,5 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
